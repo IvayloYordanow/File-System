@@ -1,26 +1,5 @@
-<?PHP
-
-if ($_POST){
-    
-    if (count($_FILES>0)){
-        
-        print_r($_FILES);
-        
-        if (move_uploaded_file($_FILES['MyPictures']['tmp_name'],'Pictures'.DIRECTORY_SEPARATOR.$_FILES['MyPictures']['name'] )){
-            
-            echo 'File uploaded successfuly ';
-        }
-            
-            else {
-                
-                echo 'File is not uploaded';
-            }
-            
-        }
-    
-}
-
-
+<?php
+require("sessions.php");
 ?>
 
 <!DOCTYPE html>
@@ -30,12 +9,45 @@ if ($_POST){
         <title></title>
     </head>
     <body>
-   <form enctype='multypart/form-data' name="files" method="POST" action="">
+   <form enctype='multipart/form-data' name="files" method="POST" action="">
        
       
-       <input type="file" name="MyPictures"/>
-       <input type="submit" value="Upload">
+       <input type="file" name="strFile"/>
+       <input type="submit" name="submit" value="Upload"/>
 
    </form>
     </body>
 </html>
+
+
+<?PHP
+
+
+if ($_POST){
+    
+    $strFilname=$_FILES['strFile']['tmp_name'];
+    $strRealname=$_FILES['strFile']['name'];
+     
+    
+    if (is_uploaded_file($strFilname))
+             if(move_uploaded_file( $strFilname,"Pictures/$strRealname")){
+                     echo'File uploaded successfully';
+             
+             $filetext=fopen("uploadedfiles.txt",'a');
+             fwrite($filetext,"$strRealname\r\n");
+             if (!fclose($filetext))
+                 echo "<p>Error closing file</p>";
+}
+             
+             else {
+                 echo 'Error:File not moved';
+             }
+             
+             else 'Error: Not an uplodaded file';
+} 
+
+
+?>
+</br>
+<a href="files.php">Uploaded files</a>
+
