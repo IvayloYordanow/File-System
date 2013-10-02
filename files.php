@@ -1,18 +1,36 @@
 <?php
+require("sessions.php");
 
-if ($_POST) {
-    $username = trim($_POST['username']);
-    $password = trim($_POST['password']);
+
+   
+   $filetext=fopen("uploadedfiles.txt",'r');
+     
+   echo "<p>These files have been uploaded</p>";
+     while(!feof($filetext)) {
+         
+         $strLine=fgets($filetext);
+         
+         echo"<p> <a href='Pictures/$strLine'target=\"_blank\">$strLine</a></p>";
+     }
+   
     
-    if ( $username=='user'&& $password=='qwerty'){
-        echo 'Welcome';
-    }
-      else {
-          echo 'Wrong username or password';
-      }
-}
-
- 
- 
- 
+      
 ?>
+
+<html>
+<body>
+
+<?php
+
+if (isset($_POST)) {
+   session_unset();
+   session_destroy();
+}
+?>
+
+<form method="POST">
+   <input type="submit" value="Logout"/>
+</form>
+
+</body>
+</html>
